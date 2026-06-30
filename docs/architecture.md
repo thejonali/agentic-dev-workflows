@@ -67,8 +67,8 @@ data.
 4. Verify generated output and examples.
 5. Report changed behavior, checks performed, and remaining risks.
 
-## Phase 0 Boundary
+## Current Phase Boundary
 
-The current phase establishes documentation, repository rules, and tracked
-directory scaffolding only. Schemas, workflow specifications, provider assets,
-validation scripts, generation tooling, and the MCP server are later phases.
+Phase 1 establishes the initial canonical workflow specifications in `core/`.
+Agent contracts, command contracts, schemas, provider assets, validation scripts,
+generation tooling, and the MCP server are later phases.

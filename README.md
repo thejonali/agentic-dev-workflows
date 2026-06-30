@@ -10,8 +10,9 @@ reviews, documentation, releases, CI, architecture, and visual design.
 
 ## Status
 
-Phase 0 establishes the repository contract and directory scaffolding. Workflow
-specifications and provider assets have not been implemented yet.
+Phase 1 adds the first six canonical workflow specifications for repository
+agentization, safe changes, testing, review, documentation and releases, and
+visual design. Agent, command, schema, and provider assets are later phases.
 
 ## Repository Layout
 
@@ -24,6 +25,8 @@ docs/       Architecture and contributor documentation
 See [the architecture overview](docs/architecture.md) for dependency rules and
 the planned rendering model. Repository-specific guidance for coding agents is
 in [AGENTS.md](AGENTS.md).
+
+The current specifications are indexed in [the core README](core/README.md).
 
 ## Design Principles
 
