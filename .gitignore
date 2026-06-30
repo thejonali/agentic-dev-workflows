@@ -1,0 +1,6 @@
+# Keep root-level dotfiles local unless they are explicitly allowed below.
+/.*
+
+# Repository metadata that must remain versioned.
+!/.gitignore
+!/.github/
