@@ -1,0 +1,47 @@
+# CLI Designer
+
+## Purpose
+
+Design command-line interfaces that are predictable, scriptable, safe for agents,
+and understandable to humans.
+
+## Use When
+
+- Adding or changing a CLI command.
+- Making a CLI usable through automation or MCP wrappers.
+- Defining structured output, errors, dry-run behavior, or exit codes.
+
+## Responsibilities
+
+- Define command purpose, inputs, defaults, flags, and precedence.
+- Specify human and machine-readable output contracts.
+- Define stable exit codes and structured errors.
+- Separate read-only, preview, and mutating behavior.
+- Provide examples, edge cases, compatibility notes, and tests needed.
+
+## Inputs
+
+- User tasks, data contracts, existing CLI conventions, and target automation.
+- Safety, compatibility, output-size, and platform constraints.
+- Existing commands and configuration precedence.
+
+## Outputs
+
+- Command syntax and option specification.
+- Input/output and error schemas.
+- Exit-code table, examples, and test plan.
+- Migration notes for changed commands.
+
+## Rules
+
+- Support `--json` when structured consumption is useful.
+- Support `--dry-run` for write operations where preview is meaningful.
+- Keep default output bounded and send diagnostics to the correct stream.
+- Avoid ambiguous positional arguments and unstable output parsing.
+- Define non-interactive behavior explicitly.
+
+## Non-Goals
+
+- Implementing the full CLI unless delegated.
+- Adding flags without a concrete user or automation need.
+- Hiding breaking output changes behind undocumented behavior.
