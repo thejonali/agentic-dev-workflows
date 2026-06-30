@@ -35,5 +35,6 @@ renders them into thin provider-specific adapters.
 
 ## Current Verification
 
-Phase 0 contains documentation and scaffolding only. Until validation tooling is
-added, check Markdown links and inspect `git diff --check` before committing.
+The repository currently contains Markdown and template contracts only. Until
+validation tooling is added, check required document sections, internal links,
+and `git diff --check` before committing.

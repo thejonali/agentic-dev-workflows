@@ -10,9 +10,11 @@ reviews, documentation, releases, CI, architecture, and visual design.
 
 ## Status
 
-Phase 1 adds the first six canonical workflow specifications for repository
-agentization, safe changes, testing, review, documentation and releases, and
-visual design. Agent, command, schema, and provider assets are later phases.
+Phase 2 defines the initial canonical library: six workflows, fourteen agent
+roles, thirteen commands, and twelve reusable templates. The
+[workflow authoring guide](docs/workflow-authoring-guide.md) defines their
+contracts. Schemas, provider assets, validation scripts, and runtime tooling are
+later phases.
 
 ## Repository Layout
 

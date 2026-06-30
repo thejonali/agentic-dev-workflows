@@ -69,6 +69,6 @@ data.
 
 ## Current Phase Boundary
 
-Phase 1 establishes the initial canonical workflow specifications in `core/`.
-Agent contracts, command contracts, schemas, provider assets, validation scripts,
-generation tooling, and the MCP server are later phases.
+Phase 2 establishes the initial canonical workflows, agent roles, command
+contracts, templates, and authoring rules in `core/`. Schemas, provider assets,
+validation scripts, generation tooling, and the MCP server are later phases.
