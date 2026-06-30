@@ -1,0 +1,27 @@
+---
+description: {{rule_description}}
+globs: {{file_globs}}
+alwaysApply: {{always_apply}}
+---
+
+# {{rule_name}}
+
+## Context
+
+{{rule_context}}
+
+## Rules
+
+- {{rule}}
+- Preserve behavior outside the requested scope.
+- Prefer existing project patterns and utilities.
+- Update tests and documentation for changed behavior.
+- Run `{{verification_command}}` when relevant.
+
+## Constraints
+
+{{constraints}}
+
+## Expected Delivery
+
+Summarize changed files, verification results, and unresolved risks.
