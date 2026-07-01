@@ -1,0 +1,124 @@
+---
+name: repo-agentization
+description: Make a repository ready for repeatable AI-assisted development. Use to map a codebase, derive verified commands, audit agent readiness, or create repository guidance without rewriting application code.
+---
+
+# Repository Agentization Workflow
+
+Canonical source in this repository: `core/workflows/repo-agentization.workflow.md`
+
+## Codex Execution Notes
+
+- Read the applicable repository instructions before acting.
+- Treat the required-agent names below as review perspectives. Spawn subagents only when the user explicitly requests subagents or parallel agent work.
+- Preserve analysis-only, read-only, and write-authorization boundaries from the request.
+- Prefer targeted verification before broader checks and report only checks actually run.
+- End with changed files or findings, verification results, assumptions, and remaining risks.
+
+## Canonical Workflow
+
+## Purpose
+
+Make an existing repository safe and efficient for AI-assisted development by
+documenting its structure, commands, constraints, and missing automation.
+
+## When to Use
+
+- Preparing a repository for its first coding-agent contribution.
+- Replacing stale or provider-specific agent instructions.
+- Auditing whether a repository is ready for repeatable agent work.
+- Preparing a repository for public contribution.
+
+Do not use this workflow as permission to rewrite application code or introduce
+new tooling automatically.
+
+## Inputs
+
+- Repository root and requested audit scope.
+- Existing contributor and agent instructions.
+- Build, test, lint, format, type-check, and release configuration.
+- Package manifests, lockfiles, CI configuration, and project layout.
+- Target providers, if provider assets are requested.
+
+## Required Agents
+
+- `architect`: maps boundaries, entry points, and development flows.
+- `docs-maintainer`: writes repository guidance and correct commands.
+- `security-reviewer`: checks secret handling, permissions, and unsafe setup.
+
+Use `cli-designer` when the repository exposes a CLI and `release-manager` for
+open-source or release-readiness work.
+
+## Commands
+
+- `/agentize-repo`: perform the full analysis and create approved guidance.
+- `/map-codebase`: produce a read-only map of the repository.
+- `/repo-health-score`: assess agent readiness with evidence.
+- `/open-source-ready`: audit contribution, security, and release surfaces.
+
+## Procedure
+
+1. Establish the repository root, requested scope, and allowed write surface.
+2. Read existing instructions before proposing new ones; the nearest applicable
+   instruction file takes precedence.
+3. Map languages, package managers, entry points, modules, generated files,
+   deployment surfaces, and ownership boundaries.
+4. Derive commands from repository configuration and CI rather than guessing.
+5. Run safe, read-only discovery first. Run expensive or mutating commands only
+   when requested or necessary and report their effects.
+6. Identify missing prerequisites, unreliable commands, conflicting guidance,
+   secret risks, and undocumented operational requirements.
+7. Propose the smallest useful instruction set and separate confirmed facts
+   from recommendations.
+8. Create or update only approved artifacts such as `AGENTS.md`, `PLANS.md`, or
+   `docs/agent-workflows.md`.
+9. Verify every documented command that can be run in the current environment.
+10. Report repository facts, changes, verification, unresolved risks, and
+    prioritized follow-up work.
+
+## Rules
+
+- Preserve existing repository conventions unless they are demonstrably broken.
+- Never infer a command when it can be read from configuration or CI.
+- Do not expose environment values, tokens, credentials, or private paths.
+- Distinguish required checks from optional checks and local checks from CI.
+- Do not add dependencies, hooks, CI jobs, or provider assets without approval.
+- Make health scores evidence-based; unknown checks are not passing checks.
+- Keep provider-neutral repository rules separate from provider-only metadata.
+
+## Outputs
+
+- Repository summary and codebase map.
+- Detected stack, entry points, and development commands.
+- Confirmed setup, build, test, lint, and release procedures.
+- Agent-readiness gaps with severity and file-level evidence.
+- Created or updated guidance files, when requested.
+- Prioritized follow-up actions and unresolved questions.
+
+## Verification
+
+- Confirm documented paths and commands exist.
+- Compare local instructions with package scripts and CI jobs.
+- Run the narrowest practical setup or validation command for changed guidance.
+- Check that generated guidance contains no secrets or machine-specific values.
+- Review the final diff for unrelated files and unsupported claims.
+
+## Failure Modes
+
+- If instructions conflict, stop writes and report the conflicting files and
+  precedence decision required.
+- If commands require unavailable dependencies or credentials, record the exact
+  prerequisite and provide the command without claiming it passed.
+- If repository scope cannot be established, return a partial map and identify
+  excluded or unknown areas.
+- If a requested health score lacks evidence, mark the category `unknown` rather
+  than estimating.
+- If discovery exposes a probable secret, redact it and report only its location
+  and remediation.
+
+## Provider Notes
+
+Provider adapters may translate this workflow into skills, commands, rules, or
+subagents. They must preserve read-first discovery, evidence-based reporting,
+and the separation between analysis and authorized writes. Provider-specific
+assets should point back to this canonical workflow.
