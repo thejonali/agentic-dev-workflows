@@ -69,6 +69,9 @@ data.
 
 ## Current Phase Boundary
 
-Phase 2 establishes the initial canonical workflows, agent roles, command
-contracts, templates, and authoring rules in `core/`. Schemas, provider assets,
-validation scripts, generation tooling, and the MCP server are later phases.
+Phase 3 adds manually synchronized Codex assets under `providers/codex/` while
+keeping workflows, roles, and command contracts canonical in `core/`. Shared
+Codex workflows use skills, custom agents use project-scoped TOML, and command
+prompts remain a deprecated compatibility surface. Schemas, automated
+validation, generation tooling, other provider adapters, and the MCP server are
+later phases.

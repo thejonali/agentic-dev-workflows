@@ -10,11 +10,12 @@ reviews, documentation, releases, CI, architecture, and visual design.
 
 ## Status
 
-Phase 2 defines the initial canonical library: six workflows, fourteen agent
-roles, thirteen commands, and twelve reusable templates. The
-[workflow authoring guide](docs/workflow-authoring-guide.md) defines their
-contracts. Schemas, provider assets, validation scripts, and runtime tooling are
-later phases.
+Phase 3 adds the first provider adapter for Codex on top of the canonical
+library: six workflow skills, fourteen custom-agent configurations, thirteen
+legacy command prompts, and [installation guidance](providers/codex/install.md).
+The [workflow authoring guide](docs/workflow-authoring-guide.md) defines the
+canonical contracts. Schemas, automated validation, generation, and runtime
+tooling are later phases.
 
 ## Repository Layout
 
@@ -29,6 +30,8 @@ the planned rendering model. Repository-specific guidance for coding agents is
 in [AGENTS.md](AGENTS.md).
 
 The current specifications are indexed in [the core README](core/README.md).
+Codex assets and their current limitations are documented in the
+[Codex installation guide](providers/codex/install.md).
 
 ## Design Principles
 
