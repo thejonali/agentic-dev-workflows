@@ -10,10 +10,10 @@ reviews, documentation, releases, CI, architecture, and visual design.
 
 ## Status
 
-Phase 5 adds machine-readable schemas and automated validation on top of the
-canonical library and the Phase 3 Codex adapter. The validator enforces document
-structure, naming, non-empty sections, and repository-local Markdown links in
-CI. Provider generation and runtime tooling remain later phases.
+Phase 6 generates the Phase 3 Codex adapter deterministically from the canonical
+library. Strict templates, drift checks, and checked-in golden outputs protect
+the 33 generated skills, agent configurations, and legacy commands in CI. Other
+provider adapters and runtime tooling remain later phases.
 
 ## Repository Layout
 
@@ -24,8 +24,8 @@ docs/       Architecture and contributor documentation
 ```
 
 See [the architecture overview](docs/architecture.md) for dependency rules and
-the planned rendering model. Repository-specific guidance for coding agents is
-in [AGENTS.md](AGENTS.md).
+the rendering model. Repository-specific guidance for coding agents is in
+[AGENTS.md](AGENTS.md).
 
 The current specifications are indexed in [the core README](core/README.md).
 Codex assets and their current limitations are documented in the
@@ -39,6 +39,15 @@ python3 -B scripts/validate_workflows.py
 
 Use `--json` for deterministic machine-readable output. Validation failures
 exit with status 1; invalid command-line usage exits with status 2.
+
+Check that provider assets match canonical inputs with:
+
+```sh
+python3 -B scripts/generate_provider_assets.py --check
+```
+
+See the [provider adapter guide](docs/provider-adapters.md) before regenerating
+or changing provider packaging.
 
 ## Design Principles
 

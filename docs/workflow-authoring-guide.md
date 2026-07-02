@@ -193,6 +193,12 @@ Every manually maintained provider asset should identify its canonical source.
 Generated assets should also record the generator or source version when the
 provider format permits it.
 
+The Codex adapter is generated. Change canonical behavior in `core/`, keep
+Codex-only selection metadata in `providers/codex/generator.json`, and keep
+packaging structure in `providers/codex/templates/`. Do not edit generated
+skills, agents, or commands without updating their canonical input. Follow the
+[provider adapter guide](provider-adapters.md) to regenerate and verify output.
+
 ## Authoring Checklist
 
 - [ ] The outcome is recurring and provider-neutral.

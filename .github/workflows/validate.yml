@@ -26,3 +26,6 @@ jobs:
 
       - name: Validate canonical specifications
         run: python scripts/validate_workflows.py
+
+      - name: Check generated provider assets
+        run: python scripts/generate_provider_assets.py --check

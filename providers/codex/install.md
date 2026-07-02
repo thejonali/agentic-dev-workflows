@@ -15,9 +15,9 @@ project-scoped custom agents, and optional legacy custom prompts.
 - `agents/*.toml`: optional custom agents for explicitly requested subagent work.
 - `commands/*.md`: deprecated custom-prompt compatibility assets.
 
-Every asset names its canonical source under `core/`. Until generation and
-drift validation are added, changes to canonical behavior must be applied to
-`core/` first and then manually synchronized here.
+Every generated asset names its canonical source under `core/`. Changes to
+canonical behavior must be applied to `core/` first and rendered with
+`scripts/generate_provider_assets.py`; direct edits will fail the drift check.
 
 ## Install Skills in a Repository
 
@@ -102,7 +102,9 @@ agent, or prompt with the same name without comparing its behavior.
 
 ## Limitations
 
-- Provider assets are manually synchronized until the generator phase.
+- Generation currently targets Codex only.
+- Skill selection descriptions remain provider metadata in
+  `providers/codex/generator.json` and must be added for each new workflow.
 - Codex custom prompts are deprecated and user-local, so `commands/` is a
   compatibility surface rather than the primary shared interface.
 - Custom-agent authoring may evolve; these files use the currently documented

@@ -14,11 +14,14 @@ providers/
 ```
 
 Adapters may add required metadata or translate file structure, but should not
-silently redefine core workflow behavior. Until generation tooling exists,
-provider assets must identify the canonical source they implement.
+silently redefine core workflow behavior. Generated assets must identify the
+canonical source they implement and pass the repository drift check.
 
 The initial Codex adapter is available under `codex/`. Its
 [installation guide](codex/install.md) documents supported skills and custom
 agents, the deprecated command-prompt compatibility layer, verification, and
-current manual-synchronization limits. Claude, Cursor, and generic adapters are
-planned for later phases.
+current generation limits. Claude, Cursor, and generic adapters are planned for
+later phases.
+
+Generation inputs and the safe update procedure are documented in the
+[provider adapter guide](../docs/provider-adapters.md).

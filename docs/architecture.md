@@ -38,9 +38,10 @@ behavior remains in `core/`.
 ### Validation and Rendering
 
 `scripts/validate_workflows.py` validates core document contracts and local
-Markdown links against schemas in `core/schemas/`. Rendering remains planned.
-Generated output must be deterministic: identical canonical inputs and tool
-versions should produce identical files.
+Markdown links against schemas in `core/schemas/`.
+`scripts/generate_provider_assets.py` renders Codex assets through strict
+provider templates and detects drift against checked-in output. Identical
+canonical inputs and tool versions produce identical files.
 
 ### MCP Server
 
@@ -70,7 +71,7 @@ data.
 
 ## Current Phase Boundary
 
-Phase 5 adds JSON schemas, a standard-library validator, and pull-request CI on
-top of the Phase 3 Codex adapter. Phase 4 provider adapters are intentionally
-deferred. Provider generation, other provider adapters, and the MCP server
-remain later phases.
+Phase 6 makes the Codex adapter reproducible from canonical core documents,
+provider templates, and a small provider metadata manifest. Phase 4 provider
+adapters remain intentionally deferred. Other provider adapters and the MCP
+server remain later phases.

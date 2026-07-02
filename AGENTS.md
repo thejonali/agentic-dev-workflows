@@ -41,5 +41,6 @@ validator. Run the focused checks before committing:
 ```sh
 python3 -B -m unittest discover -s tests -v
 python3 -B scripts/validate_workflows.py
+python3 -B scripts/generate_provider_assets.py --check
 git diff --check
 ```
