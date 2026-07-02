@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "workflow.schema.json",
+  "title": "Canonical workflow document",
+  "description": "Normalized content contract for core/workflows/*.workflow.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "title", "sections"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Purpose",
+        "When to Use",
+        "Inputs",
+        "Required Agents",
+        "Commands",
+        "Procedure",
+        "Rules",
+        "Outputs",
+        "Verification",
+        "Failure Modes",
+        "Provider Notes"
+      ],
+      "properties": {
+        "Purpose": {"type": "string", "minLength": 1},
+        "When to Use": {"type": "string", "minLength": 1},
+        "Inputs": {"type": "string", "minLength": 1},
+        "Required Agents": {"type": "string", "minLength": 1},
+        "Commands": {"type": "string", "minLength": 1},
+        "Procedure": {"type": "string", "minLength": 1},
+        "Rules": {"type": "string", "minLength": 1},
+        "Outputs": {"type": "string", "minLength": 1},
+        "Verification": {"type": "string", "minLength": 1},
+        "Failure Modes": {"type": "string", "minLength": 1},
+        "Provider Notes": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "x-markdown": {
+    "directory": "core/workflows",
+    "fileSuffix": ".workflow.md"
+  }
+}

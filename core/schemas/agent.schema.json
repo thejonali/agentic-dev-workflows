@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent.schema.json",
+  "title": "Canonical agent document",
+  "description": "Normalized content contract for core/agents/*.agent.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "title", "sections"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Purpose",
+        "Use When",
+        "Responsibilities",
+        "Inputs",
+        "Outputs",
+        "Rules",
+        "Non-Goals"
+      ],
+      "properties": {
+        "Purpose": {"type": "string", "minLength": 1},
+        "Use When": {"type": "string", "minLength": 1},
+        "Responsibilities": {"type": "string", "minLength": 1},
+        "Inputs": {"type": "string", "minLength": 1},
+        "Outputs": {"type": "string", "minLength": 1},
+        "Rules": {"type": "string", "minLength": 1},
+        "Non-Goals": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "x-markdown": {
+    "directory": "core/agents",
+    "fileSuffix": ".agent.md"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "command.schema.json",
+  "title": "Canonical command document",
+  "description": "Normalized content contract for core/commands/*.command.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "title", "sections"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "pattern": "^/[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "sections": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Purpose",
+        "Inputs",
+        "Preconditions",
+        "Procedure",
+        "Output Format",
+        "Verification",
+        "Failure Behavior"
+      ],
+      "properties": {
+        "Purpose": {"type": "string", "minLength": 1},
+        "Inputs": {"type": "string", "minLength": 1},
+        "Preconditions": {"type": "string", "minLength": 1},
+        "Procedure": {"type": "string", "minLength": 1},
+        "Output Format": {"type": "string", "minLength": 1},
+        "Verification": {"type": "string", "minLength": 1},
+        "Failure Behavior": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "x-markdown": {
+    "directory": "core/commands",
+    "fileSuffix": ".command.md",
+    "titlePrefix": "/"
+  }
+}
