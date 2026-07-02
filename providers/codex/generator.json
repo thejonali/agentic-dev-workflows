@@ -1,0 +1,10 @@
+{
+  "skillDescriptions": {
+    "docs-release": "Keep documentation aligned with behavior and assess release readiness. Use for setup, API, CLI, README, changelog, artifact, or release work; do not use it as authorization to publish.",
+    "repo-agentization": "Make a repository ready for repeatable AI-assisted development. Use to map a codebase, derive verified commands, audit agent readiness, or create repository guidance without rewriting application code.",
+    "review": "Review a diff, commit range, branch, or pull request for actionable defects and risks. Use for read-only correctness, security, contract, testing, or pre-merge review; do not implement fixes unless asked.",
+    "safe-change": "Plan, implement, and verify a focused behavior change with minimal scope. Use for features, bug fixes, approved plans, and behavior-preserving refactors; stop after analysis when implementation is not authorized.",
+    "testing": "Analyze test gaps and add deterministic behavior-focused coverage. Use for regression tests, fixtures, contract tests, golden tests, or risk-ranked coverage analysis; keep analysis read-only unless test writes are authorized.",
+    "visual-design": "Plan, implement, and review UI or image work against explicit design, responsive, accessibility, state, and asset requirements. Use for UI briefs, component work, visual QA, accessibility, or image-asset planning."
+  }
+}

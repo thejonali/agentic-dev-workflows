@@ -1,0 +1,15 @@
+---
+description: {{description_yaml}}
+argument-hint: "[TASK_CONTEXT]"
+---
+
+# /{{name}}
+
+This is a legacy explicit-invocation Codex prompt adapted from `{{source}}`.
+Custom prompts are deprecated; prefer the matching shared skill when one exists.
+
+Treat `$ARGUMENTS` as additional task context. Read applicable repository
+instructions, preserve the authorization boundaries in the request, and follow
+the canonical command contract below.
+
+{{body}}

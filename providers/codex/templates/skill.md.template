@@ -1,0 +1,20 @@
+---
+name: {{name}}
+description: {{description}}
+---
+
+# {{title}}
+
+Canonical source in this repository: `{{source}}`
+
+## Codex Execution Notes
+
+- Read the applicable repository instructions before acting.
+- Treat the required-agent names below as review perspectives. Spawn subagents only when the user explicitly requests subagents or parallel agent work.
+- Preserve analysis-only, read-only, and write-authorization boundaries from the request.
+- Prefer targeted verification before broader checks and report only checks actually run.
+- End with changed files or findings, verification results, assumptions, and remaining risks.
+
+## Canonical Workflow
+
+{{body}}
