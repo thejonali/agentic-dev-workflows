@@ -10,12 +10,10 @@ reviews, documentation, releases, CI, architecture, and visual design.
 
 ## Status
 
-Phase 3 adds the first provider adapter for Codex on top of the canonical
-library: six workflow skills, fourteen custom-agent configurations, thirteen
-legacy command prompts, and [installation guidance](providers/codex/install.md).
-The [workflow authoring guide](docs/workflow-authoring-guide.md) defines the
-canonical contracts. Schemas, automated validation, generation, and runtime
-tooling are later phases.
+Phase 5 adds machine-readable schemas and automated validation on top of the
+canonical library and the Phase 3 Codex adapter. The validator enforces document
+structure, naming, non-empty sections, and repository-local Markdown links in
+CI. Provider generation and runtime tooling remain later phases.
 
 ## Repository Layout
 
@@ -32,6 +30,15 @@ in [AGENTS.md](AGENTS.md).
 The current specifications are indexed in [the core README](core/README.md).
 Codex assets and their current limitations are documented in the
 [Codex installation guide](providers/codex/install.md).
+
+Run the same validation used by CI with:
+
+```sh
+python3 -B scripts/validate_workflows.py
+```
+
+Use `--json` for deterministic machine-readable output. Validation failures
+exit with status 1; invalid command-line usage exits with status 2.
 
 ## Design Principles
 

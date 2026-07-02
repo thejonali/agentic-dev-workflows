@@ -37,9 +37,10 @@ behavior remains in `core/`.
 
 ### Validation and Rendering
 
-Planned scripts will validate core documents and render repeatable provider
-assets. Generated output must be deterministic: identical canonical inputs and
-tool versions should produce identical files.
+`scripts/validate_workflows.py` validates core document contracts and local
+Markdown links against schemas in `core/schemas/`. Rendering remains planned.
+Generated output must be deterministic: identical canonical inputs and tool
+versions should produce identical files.
 
 ### MCP Server
 
@@ -69,9 +70,7 @@ data.
 
 ## Current Phase Boundary
 
-Phase 3 adds manually synchronized Codex assets under `providers/codex/` while
-keeping workflows, roles, and command contracts canonical in `core/`. Shared
-Codex workflows use skills, custom agents use project-scoped TOML, and command
-prompts remain a deprecated compatibility surface. Schemas, automated
-validation, generation tooling, other provider adapters, and the MCP server are
-later phases.
+Phase 5 adds JSON schemas, a standard-library validator, and pull-request CI on
+top of the Phase 3 Codex adapter. Phase 4 provider adapters are intentionally
+deferred. Provider generation, other provider adapters, and the MCP server
+remain later phases.

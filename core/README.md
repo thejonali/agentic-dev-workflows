@@ -64,6 +64,8 @@ Provider-specific rendering guidance belongs in `providers/`.
 plans, ADRs, issues, pull requests, release notes, UI/component briefs, and image
 briefs/prompts. These are renderer inputs, not installed provider assets.
 
-Schema definitions remain planned work. See the
-[workflow authoring guide](../docs/workflow-authoring-guide.md) for canonical
-formats and compatibility rules.
+Machine-readable contracts for workflows, agents, and commands live in
+`schemas/`. Run `python3 -B scripts/validate_workflows.py` from the repository
+root to validate those contracts, canonical documents, and local Markdown
+links. See the [workflow authoring guide](../docs/workflow-authoring-guide.md)
+for authoring and compatibility rules.

@@ -35,6 +35,11 @@ renders them into thin provider-specific adapters.
 
 ## Current Verification
 
-The repository currently contains Markdown and template contracts only. Until
-validation tooling is added, check required document sections, internal links,
-and `git diff --check` before committing.
+The repository contains Markdown and template contracts plus a standard-library
+validator. Run the focused checks before committing:
+
+```sh
+python3 -B -m unittest discover -s tests -v
+python3 -B scripts/validate_workflows.py
+git diff --check
+```
