@@ -1,0 +1,56 @@
+{
+  "providerInstallations": [
+    {
+      "source": "providers/codex/skills/safe-change/SKILL.md",
+      "output": "provider-installations/codex/.agents/skills/safe-change/SKILL.md"
+    },
+    {
+      "source": "providers/claude/skills/safe-change/SKILL.md",
+      "output": "provider-installations/claude/.claude/skills/safe-change/SKILL.md"
+    },
+    {
+      "source": "providers/cursor/rules/safe-change.mdc",
+      "output": "provider-installations/cursor/.cursor/rules/safe-change.mdc"
+    },
+    {
+      "source": "providers/cursor/rules/testing.mdc",
+      "output": "provider-installations/cursor/.cursor/rules/testing.mdc"
+    }
+  ],
+  "agentGuides": {
+    "python-cli": {
+      "repository_purpose": "An illustrative Python command-line application distributed as an installable package.",
+      "instruction_scope": "the entire repository",
+      "project_structure": "- `src/example_cli/`: application package and command entry point.\n- `tests/`: behavior-focused unit and integration tests.\n- `pyproject.toml`: package, dependency, tool, and entry-point configuration.",
+      "install_command": "python -m pip install -e '.[dev]'",
+      "install_notes": "Install the package and its declared development extras in an active virtual environment.",
+      "test_command": "python -m pytest",
+      "test_notes": "Run the complete test suite.",
+      "lint_command": "ruff check .",
+      "lint_notes": "Check Python source and tests.",
+      "format_command": "ruff format --check .",
+      "format_notes": "Verify formatting without rewriting files.",
+      "build_command": "python -m build",
+      "build_notes": "Build source and wheel distributions.",
+      "change_rule": "Keep CLI parsing thin and put reusable behavior in importable modules.",
+      "verification_policy": "Run the narrowest affected pytest target first, then the complete test, lint, format, and build commands before delivery."
+    },
+    "react-app": {
+      "repository_purpose": "An illustrative React application built as a client-side web interface.",
+      "instruction_scope": "the entire repository",
+      "project_structure": "- `src/`: React components, hooks, styles, and application logic.\n- `src/**/*.test.*`: behavior-focused component and hook tests.\n- `public/`: static assets copied without transformation.\n- `package.json`: scripts and dependency contract.\n- `package-lock.json`: reproducible dependency versions used by `npm ci`.",
+      "install_command": "npm ci",
+      "install_notes": "Install exactly the dependency versions recorded in the lockfile.",
+      "test_command": "npm run test -- --run",
+      "test_notes": "Run the test suite once without watch mode.",
+      "lint_command": "npm run lint",
+      "lint_notes": "Check JavaScript, JSX, and configuration files.",
+      "format_command": "npm run format:check",
+      "format_notes": "Verify formatting without rewriting files.",
+      "build_command": "npm run build",
+      "build_notes": "Create the production bundle.",
+      "change_rule": "Keep components focused, preserve accessibility semantics, and test user-visible behavior.",
+      "verification_policy": "Run the nearest affected test first, then the complete test, lint, format, and production-build commands before delivery."
+    }
+  }
+}

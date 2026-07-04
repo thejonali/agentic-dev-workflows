@@ -30,6 +30,7 @@ class ValidateWorkflowsTests(unittest.TestCase):
         }
 
         self.assertIn("mcp/workflow-server/README.md", files)
+        self.assertIn("examples/repository-guides/python-cli/AGENTS.md", files)
 
     def test_parser_ignores_headings_inside_fenced_code(self) -> None:
         document = VALIDATOR.parse_document(
