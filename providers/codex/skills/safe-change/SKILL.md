@@ -47,8 +47,11 @@ implementation is explicitly requested.
 - `test-runner`: reproduces behavior and runs verification.
 - `reviewer`: checks the completed diff for correctness and scope.
 
-Use `data-contract-reviewer`, `security-reviewer`, or `docs-maintainer` when the
-change affects their respective surfaces.
+Use `data-contract-reviewer` or `security-reviewer` when the change affects their
+respective surfaces. Use `docs-maintainer` for documentation impact and
+`readme-specialist` after major changes that affect user-facing behavior,
+architecture, installation, configuration, testing, compatibility, licensing,
+or project status.
 
 ## Commands
 

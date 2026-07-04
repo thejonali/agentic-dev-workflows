@@ -23,6 +23,7 @@ Provider-specific rendering guidance belongs in `providers/`.
 - [Testing](workflows/testing.workflow.md)
 - [Review](workflows/review.workflow.md)
 - [Documentation and release](workflows/docs-release.workflow.md)
+- [README maintenance](workflows/readme-maintenance.workflow.md)
 - [Visual design](workflows/visual-design.workflow.md)
 
 ## Available Agents
@@ -33,6 +34,7 @@ Provider-specific rendering guidance belongs in `providers/`.
 - [Reviewer](agents/reviewer.agent.md)
 - [Security reviewer](agents/security-reviewer.agent.md)
 - [Documentation maintainer](agents/docs-maintainer.agent.md)
+- [README specialist](agents/readme-specialist.agent.md)
 - [CI debugger](agents/ci-debugger.agent.md)
 - [CLI designer](agents/cli-designer.agent.md)
 - [Data contract reviewer](agents/data-contract-reviewer.agent.md)
@@ -54,6 +56,7 @@ Provider-specific rendering guidance belongs in `providers/`.
 - [`/test-gap-analysis`](commands/test-gap-analysis.command.md)
 - [`/review-council`](commands/review-council.command.md)
 - [`/release-check`](commands/release-check.command.md)
+- [`/readme-refresh`](commands/readme-refresh.command.md)
 - [`/make-agent-friendly-cli`](commands/make-agent-friendly-cli.command.md)
 - [`/ui-polish-pass`](commands/ui-polish-pass.command.md)
 - [`/image-brief`](commands/image-brief.command.md)
@@ -62,7 +65,8 @@ Provider-specific rendering guidance belongs in `providers/`.
 
 `templates/` contains canonical starting points for repository instructions,
 plans, ADRs, issues, pull requests, release notes, UI/component briefs, and image
-briefs/prompts. These are renderer inputs, not installed provider assets.
+briefs/prompts, plus a professional README structure. These are renderer inputs,
+not installed provider assets.
 
 Machine-readable contracts for workflows, agents, and commands live in
 `schemas/`. Run `python3 -B scripts/validate_workflows.py` from the repository

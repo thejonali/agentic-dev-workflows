@@ -1,6 +1,7 @@
 {
   "skillDescriptions": {
     "docs-release": "Keep documentation aligned with behavior and assess release readiness. Use for setup, API, CLI, README, changelog, artifact, or release work; do not use it as authorization to publish.",
+    "readme-maintenance": "Create, rewrite, audit, and synchronize professional project README files from repository evidence. Use for new projects, README work, major feature or architecture updates, releases, installation and testing changes, licenses, diagrams, use cases, or badges.",
     "repo-agentization": "Make a repository ready for repeatable AI-assisted development. Use to map a codebase, derive verified commands, audit agent readiness, or create repository guidance without rewriting application code.",
     "review": "Review a diff, commit range, branch, or pull request for actionable defects and risks. Use for read-only correctness, security, contract, testing, or pre-merge review; do not implement fixes unless asked.",
     "safe-change": "Plan, implement, and verify a focused behavior change with minimal scope. Use for features, bug fixes, approved plans, and behavior-preserving refactors; stop after analysis when implementation is not authorized.",

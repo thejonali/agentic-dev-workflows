@@ -41,6 +41,8 @@ traceable evidence, accurate artifacts, and explicit rollback considerations.
 ## Required Agents
 
 - `docs-maintainer`: verifies and updates user-facing documentation.
+- `readme-specialist`: creates or synchronizes the README for major updates,
+  releases, public launches, and README-specific audits.
 - `release-manager`: owns readiness, artifacts, notes, and rollback planning.
 - `test-runner`: verifies documented commands and release checks.
 
@@ -50,6 +52,8 @@ Use `security-reviewer` for publishing credentials and artifact provenance, and
 ## Commands
 
 - `/readme-truth-audit`: compare README claims and commands with the repository.
+- `/readme-refresh`: create, rewrite, or synchronize the README from repository
+  evidence.
 - `/docs-sync`: update documentation for a defined behavior change.
 - `/generate-usage-examples`: create verified, minimal usage examples.
 - `/release-check`: assess readiness without publishing.

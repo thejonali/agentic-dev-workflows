@@ -12,7 +12,7 @@ reviews, documentation, releases, CI, architecture, and visual design.
 
 Phase 6 generates the Phase 3 Codex adapter deterministically from the canonical
 library. Strict templates, drift checks, and checked-in golden outputs protect
-the 33 generated skills, agent configurations, and legacy commands in CI. Other
+the 36 generated skills, agent configurations, and legacy commands in CI. Other
 provider adapters and runtime tooling remain later phases.
 
 ## Repository Layout
