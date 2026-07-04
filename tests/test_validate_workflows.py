@@ -16,6 +16,12 @@ SPEC.loader.exec_module(VALIDATOR)
 
 
 class ValidateWorkflowsTests(unittest.TestCase):
+    def test_repository_validation_covers_all_generated_providers(self) -> None:
+        result = VALIDATOR.validate_repository(SCRIPT_PATH.parents[1])
+
+        self.assertEqual(result["status"], "pass")
+        self.assertEqual(result["counts"]["providerAssets"], 93)
+
     def test_mcp_documentation_is_checked_for_local_links(self) -> None:
         root = SCRIPT_PATH.parents[1]
         files = {

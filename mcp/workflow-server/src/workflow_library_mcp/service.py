@@ -165,18 +165,22 @@ def render_provider_asset(
     limit = _bounded_limit(max_chars)
     root = repository_root()
     _workflow_path(root, workflow)
-    if provider != "codex":
+    generator, _ = _load_repository_modules(root)
+    if provider not in generator.PROVIDERS:
         raise WorkflowServerError(
             "unsupported-provider",
-            "only the codex provider is currently available",
+            "provider must be one of: " + ", ".join(generator.PROVIDERS),
             provider=provider,
         )
-    generator, _ = _load_repository_modules(root)
     try:
-        assets = generator.generate_codex_assets(root)
+        assets = generator.generate_provider_assets(root, provider)
     except (generator.GenerationError, OSError) as exc:
         raise WorkflowServerError("render-failed", str(exc)) from exc
-    asset_path = f"skills/{workflow}/SKILL.md"
+    asset_path = {
+        "claude": f"skills/{workflow}/SKILL.md",
+        "codex": f"skills/{workflow}/SKILL.md",
+        "cursor": f"rules/{workflow}.mdc",
+    }[provider]
     content = assets[asset_path]
     return {
         "workflow": workflow,

@@ -12,6 +12,14 @@ from pathlib import Path
 from typing import Any, Iterable
 from urllib.parse import unquote
 
+if __package__:
+    from . import generate_provider_assets as provider_generator
+else:
+    try:
+        from scripts import generate_provider_assets as provider_generator
+    except ModuleNotFoundError:
+        import generate_provider_assets as provider_generator
+
 
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 SCHEMA_FILES = ("workflow.schema.json", "agent.schema.json", "command.schema.json")
@@ -235,7 +243,14 @@ def _validate_links(path: Path, root: Path) -> tuple[int, list[ValidationError]]
 def validate_repository(root: Path) -> dict[str, Any]:
     root = root.resolve()
     errors: list[ValidationError] = []
-    counts = {"workflows": 0, "agents": 0, "commands": 0, "schemas": 0, "links": 0}
+    counts = {
+        "workflows": 0,
+        "agents": 0,
+        "commands": 0,
+        "schemas": 0,
+        "providerAssets": 0,
+        "links": 0,
+    }
 
     schema_dir = root / "core" / "schemas"
     for schema_name in SCHEMA_FILES:
@@ -279,6 +294,33 @@ def validate_repository(root: Path) -> dict[str, Any]:
         for document in documents:
             errors.extend(_validate_document(document, root, schema))
 
+    for provider in provider_generator.PROVIDERS:
+        try:
+            assets = provider_generator.generate_provider_assets(root, provider)
+            drift = provider_generator.compare_assets(
+                assets, root / "providers" / provider, provider
+            )
+        except (provider_generator.GenerationError, OSError) as exc:
+            errors.append(
+                ValidationError(
+                    f"providers/{provider}",
+                    1,
+                    "invalid-provider",
+                    str(exc),
+                )
+            )
+            continue
+        counts["providerAssets"] += len(assets)
+        for item in drift:
+            errors.append(
+                ValidationError(
+                    f"providers/{provider}/{item.path}",
+                    1,
+                    "provider-drift",
+                    item.reason,
+                )
+            )
+
     for markdown_file in _markdown_files(root):
         checked, link_errors = _validate_links(markdown_file, root)
         counts["links"] += checked
@@ -315,6 +357,7 @@ def main(argv: list[str] | None = None) -> int:
             "validated: "
             f"{counts['workflows']} workflows, {counts['agents']} agents, "
             f"{counts['commands']} commands, {counts['schemas']} schemas, "
+            f"{counts['providerAssets']} provider assets, "
             f"{counts['links']} local links"
         )
     else:

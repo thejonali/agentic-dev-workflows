@@ -47,15 +47,21 @@ class WorkflowServiceTests(unittest.TestCase):
         self.assertGreater(workflow["totalChars"], 1_000)
         self.assertTrue(workflow["truncated"])
 
-    def test_render_reuses_checked_in_generator_output(self) -> None:
-        rendered = service.render_provider_asset("safe-change")
-        expected = (ROOT / "providers/codex/skills/safe-change/SKILL.md").read_text(
-            encoding="utf-8"
-        )
+    def test_render_reuses_each_checked_in_provider_output(self) -> None:
+        expected_paths = {
+            "claude": "skills/safe-change/SKILL.md",
+            "codex": "skills/safe-change/SKILL.md",
+            "cursor": "rules/safe-change.mdc",
+        }
 
-        self.assertEqual(rendered["content"], expected)
-        self.assertEqual(rendered["assetPath"], "skills/safe-change/SKILL.md")
-        self.assertFalse(rendered["truncated"])
+        for provider, asset_path in expected_paths.items():
+            rendered = service.render_provider_asset("safe-change", provider)
+            expected = (ROOT / "providers" / provider / asset_path).read_text(
+                encoding="utf-8"
+            )
+            self.assertEqual(rendered["content"], expected)
+            self.assertEqual(rendered["assetPath"], asset_path)
+            self.assertFalse(rendered["truncated"])
 
     def test_validation_reuses_repository_validator(self) -> None:
         result = service.validate_workflow("review")
