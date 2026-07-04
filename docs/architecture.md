@@ -45,8 +45,11 @@ canonical inputs and tool versions produce identical files.
 
 ### MCP Server
 
-The planned MCP server will expose structured operations such as listing,
-inspecting, validating, and rendering workflows. Static guidance remains in
+The local stdio MCP server exposes structured operations for listing,
+inspecting, validating, and rendering workflows plus evidence-based repository
+health scoring. It delegates validation and provider rendering to the same
+Python functions used by local scripts. The adapter is read-only, bounds large
+responses, and returns stable structured errors. Static guidance remains in
 Markdown; MCP is reserved for operations that benefit from schemas or runtime
 data.
 
@@ -71,7 +74,7 @@ data.
 
 ## Current Phase Boundary
 
-Phase 6 makes the Codex adapter reproducible from canonical core documents,
-provider templates, and a small provider metadata manifest. Phase 4 provider
-adapters remain intentionally deferred. Other provider adapters and the MCP
-server remain later phases.
+Phase 7 adds the read-only MCP workflow server while preserving the canonical
+core and shared rendering/validation boundaries established in Phase 6. Phase 4
+provider adapters remain intentionally deferred, and MCP rendering supports only
+the current Codex adapter until those providers exist.
