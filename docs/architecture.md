@@ -53,6 +53,13 @@ responses, and returns stable structured errors. Static guidance remains in
 Markdown; MCP is reserved for operations that benefit from schemas or runtime
 data.
 
+### Examples
+
+`examples/` contains installed provider snapshots and illustrative repository
+guides. `scripts/generate_examples.py` derives them from checked provider assets,
+the canonical `AGENTS.md` template, and explicit example configuration. Examples
+are consumers of public outputs and never become sources of workflow behavior.
+
 ## Dependency Rules
 
 1. Core definitions must not import or require provider adapters.
@@ -74,8 +81,8 @@ data.
 
 ## Current Phase Boundary
 
-Phase 4 provider packaging is now implemented through the Phase 5 validation and
-Phase 6 generation pipeline rather than as manually maintained copies. Codex,
-Claude Code, and Cursor assets are reproducible from canonical core documents and
-provider-owned templates. Phase 7 MCP rendering reuses the same generator for all
-three providers; the generic adapter remains deferred.
+Phase 8 adds reproducible dogfooding examples on top of the Phase 4 provider
+packaging, Phase 5 validation, Phase 6 generation, and Phase 7 MCP server. Codex,
+Claude Code, and Cursor installation snapshots remain derived outputs, while the
+Python CLI and React `AGENTS.md` profiles remain explicitly illustrative. The
+generic adapter remains deferred.

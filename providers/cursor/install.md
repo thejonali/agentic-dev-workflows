@@ -6,6 +6,7 @@ commands as reusable custom commands.
 ## Requirements
 
 - A current Cursor installation.
+- Cursor Agent CLI when terminal-based rule verification is required.
 - A target repository where you may add `.cursor/` files.
 - A checkout of this workflow repository when installing by copy.
 
@@ -47,6 +48,19 @@ command with the same name without comparing behavior.
 3. Reference the rule by name in a read-only request and inspect its behavior.
 4. Type `/` in chat and confirm the installed command appears.
 5. Use a read-only or dry-run request before authorizing a workflow that writes.
+
+For a terminal-based rule check, authenticate Cursor Agent and run an isolated,
+read-only request against the target repository:
+
+```sh
+cursor-agent status
+cursor-agent --print --mode ask --sandbox enabled --trust \
+  --workspace "$TARGET_REPO" \
+  "Do not modify files or run shell commands. List available Cursor project rules."
+```
+
+Compare the working tree before and after the request. `ask` mode is read-only,
+but verification should still use a clean or disposable checkout.
 
 ## Limitations
 
