@@ -1,0 +1,13 @@
+---
+name: {{name}}
+description: {{description_yaml}}
+model: inherit
+---
+
+Canonical source: `{{source}}`
+
+Stay within this role's delegated scope. Do not perform writes, external actions,
+or adjacent-role work unless the parent task authorizes them. Return concise
+evidence and the outputs required below.
+
+{{content}}

@@ -1,0 +1,132 @@
+---
+description: "Keep documentation aligned with actual behavior and prepare releases with traceable evidence, accurate artifacts, and explicit rollback considerations."
+globs:
+alwaysApply: false
+---
+
+# Documentation and Release Workflow
+
+Canonical source in this repository: `core/workflows/docs-release.workflow.md`
+
+## Cursor Execution Notes
+
+- Read applicable repository instructions before acting.
+- Preserve analysis-only, read-only, and write-authorization boundaries from the request.
+- Treat required-agent names as review perspectives; this adapter does not define Cursor subagents.
+- Apply this rule only when its workflow matches the current task or the user selects it.
+- Prefer targeted verification before broader checks and report only checks actually run.
+- End with changed files or findings, verification results, assumptions, and remaining risks.
+
+## Canonical Workflow
+
+## Purpose
+
+Keep documentation aligned with actual behavior and prepare releases with
+traceable evidence, accurate artifacts, and explicit rollback considerations.
+
+## When to Use
+
+- Changing setup, configuration, APIs, CLI behavior, or user workflows.
+- Auditing README or example accuracy.
+- Preparing a versioned release or changelog entry.
+- Drafting a pull-request description from completed work.
+- Checking whether a repository is ready to publish.
+
+## Inputs
+
+- Current implementation, public interfaces, and user-facing behavior.
+- README, guides, examples, changelog, and release configuration.
+- Versioning policy, target version, and release range.
+- Build, test, packaging, signing, and publishing commands.
+- Compatibility notes, migrations, deprecations, and known limitations.
+
+## Required Agents
+
+- `docs-maintainer`: verifies and updates user-facing documentation.
+- `readme-specialist`: creates or synchronizes the README for major updates,
+  releases, public launches, and README-specific audits.
+- `release-manager`: owns readiness, artifacts, notes, and rollback planning.
+- `test-runner`: verifies documented commands and release checks.
+
+Use `security-reviewer` for publishing credentials and artifact provenance, and
+`data-contract-reviewer` for migrations or compatibility-sensitive changes.
+
+## Commands
+
+- `/readme-truth-audit`: compare README claims and commands with the repository.
+- `/readme-refresh`: create, rewrite, or synchronize the README from repository
+  evidence.
+- `/docs-sync`: update documentation for a defined behavior change.
+- `/generate-usage-examples`: create verified, minimal usage examples.
+- `/release-check`: assess readiness without publishing.
+- `/prepare-release`: update approved release artifacts and metadata.
+- `/changelog-entry`: write a user-facing change entry.
+- `/pr-description`: summarize scope, verification, risk, and rollout.
+
+## Procedure
+
+1. Define the audience, changed behavior, release range, and authorized writes.
+2. Inventory public interfaces and search documentation and examples for affected
+   names, flags, paths, defaults, screenshots, and outputs.
+3. Verify claims against implementation, configuration, tests, and packaging
+   metadata. Do not copy stale documentation forward.
+4. Update the smallest coherent documentation set, including setup, examples,
+   migration guidance, and limitations where applicable.
+5. Run documented commands in a clean or representative environment when
+   practical; mark commands that require credentials or unavailable platforms.
+6. For releases, confirm version consistency, change range, required checks,
+   artifact contents, dependency state, license/provenance, and secret hygiene.
+7. Draft release notes by user impact, separating breaking changes, features,
+   fixes, deprecations, and known issues.
+8. Define publishing prerequisites, rollout order, observability, and rollback.
+9. Review the final diff and artifact list for accidental, generated, local, or
+   sensitive files.
+10. Report readiness, changes made, checks run, blockers, and remaining risk.
+
+## Rules
+
+- Documentation examples must be runnable or explicitly labeled illustrative.
+- Never claim a check, platform, or installation path was verified when it was not.
+- Release preparation does not authorize publishing, tagging, or external writes.
+- Do not include tokens, local paths, private URLs, or environment values.
+- Generate notes from the actual release range, not memory or branch names alone.
+- Call out breaking changes and required migrations prominently.
+- Keep pull-request and release claims proportional to evidence.
+- Inspect packaged artifacts, not only source-tree contents, before release approval.
+
+## Outputs
+
+- Documentation drift report and corrected files.
+- Verified usage examples and commands.
+- Release-readiness checklist with pass, fail, or unknown status.
+- Version, changelog, and release-note updates when authorized.
+- Artifact inventory, rollout plan, and rollback notes.
+- Pull-request description with scope, testing, and risk.
+
+## Verification
+
+- Run all changed commands and examples that the environment supports.
+- Validate internal links, referenced paths, and version strings.
+- Run the repository's required tests, build, packaging, and documentation checks.
+- Inspect release archives or package manifests for expected and sensitive files.
+- Compare changelog and notes with the exact commit or tag range.
+- Confirm publishing remains a separate explicit action.
+
+## Failure Modes
+
+- If implementation and documentation disagree, treat implementation as evidence,
+  surface the discrepancy, and do not silently choose a new contract.
+- If the release range or version policy is unknown, stop version and notes changes
+  until those inputs are established.
+- If a documented command cannot run, preserve the exact error and mark it
+  unverified rather than rewriting it speculatively.
+- If required checks fail, report the release as blocked and retain failure output.
+- If artifacts cannot be reproduced, report provenance as unknown and do not
+  recommend publishing.
+
+## Provider Notes
+
+Provider adapters must keep audit, preparation, and publication as distinct
+operations. Any command that tags, uploads, publishes, or sends a pull request is
+an external write and requires explicit authorization. Generated summaries must
+retain exact verification status and must not convert `unknown` into `pass`.

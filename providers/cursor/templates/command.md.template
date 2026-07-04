@@ -1,0 +1,10 @@
+# /{{name}}
+
+This Cursor custom command is adapted from `{{source}}`.
+
+Treat task context supplied with the command as additional input. Read applicable
+repository instructions, preserve the request's authorization boundaries, and
+follow the canonical command contract below. Treat named agent roles as review
+perspectives unless the target project defines matching agents.
+
+{{body}}

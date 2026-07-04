@@ -1,0 +1,13 @@
+# /{{name}}
+
+This Claude Code compatibility command is adapted from `{{source}}`. Skills are
+the preferred reusable workflow surface; existing `.claude/commands/` files
+remain supported for explicit invocation.
+
+Treat task context supplied after the command as additional input. Read
+applicable repository instructions, preserve the request's authorization
+boundaries, and follow the canonical command contract below. Named agent roles
+require matching installed subagents; otherwise treat them as review
+perspectives.
+
+{{body}}

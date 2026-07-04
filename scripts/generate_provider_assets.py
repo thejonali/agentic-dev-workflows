@@ -18,8 +18,14 @@ else:
     from render_templates import TemplateError, render_template
 
 
-PROVIDER = "codex"
+PROVIDER = "codex"  # Backward-compatible default for the public helper functions.
+PROVIDERS = ("claude", "codex", "cursor")
 NAME_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+ASSET_GLOBS = {
+    "claude": ("skills/*/SKILL.md", "agents/*.md", "commands/*.md"),
+    "codex": ("skills/*/SKILL.md", "agents/*.toml", "commands/*.md"),
+    "cursor": ("rules/*.mdc", "commands/*.md"),
+}
 
 
 @dataclass(frozen=True, order=True)
@@ -94,6 +100,47 @@ def _validate_skill_description(name: str, description: str) -> None:
         )
 
 
+def _core_files(root: Path, directory: str, suffix: str) -> list[Path]:
+    files = sorted((root / "core" / directory).glob(f"*{suffix}"))
+    if not files:
+        raise GenerationError(f"no canonical {directory} found")
+    for path in files:
+        name = path.name.removesuffix(suffix)
+        if not NAME_PATTERN.fullmatch(name):
+            raise GenerationError(f"invalid canonical {directory} name: {name}")
+    return files
+
+
+def _validate_frontmatter(
+    content: str, expected: dict[str, str], source_path: Path
+) -> None:
+    lines = content.splitlines()
+    if not lines or lines[0] != "---":
+        raise GenerationError(f"generated asset for {source_path} has no frontmatter")
+    try:
+        end = lines.index("---", 1)
+    except ValueError as exc:
+        raise GenerationError(
+            f"generated asset for {source_path} has unclosed frontmatter"
+        ) from exc
+    fields: dict[str, str] = {}
+    for line in lines[1:end]:
+        if ":" not in line:
+            raise GenerationError(
+                f"generated asset for {source_path} has invalid frontmatter: {line}"
+            )
+        key, value = line.split(":", 1)
+        if key in fields:
+            raise GenerationError(
+                f"generated asset for {source_path} repeats frontmatter key: {key}"
+            )
+        fields[key] = value.strip()
+    if fields != expected:
+        raise GenerationError(
+            f"generated asset for {source_path} has unexpected frontmatter"
+        )
+
+
 def generate_codex_assets(root: Path) -> dict[str, str]:
     root = root.resolve()
     provider_root = root / "providers" / PROVIDER
@@ -111,7 +158,7 @@ def generate_codex_assets(root: Path) -> dict[str, str]:
     command_template = _template(templates / "command.md.template")
     assets: dict[str, str] = {}
 
-    workflows = sorted((root / "core" / "workflows").glob("*.workflow.md"))
+    workflows = _core_files(root, "workflows", ".workflow.md")
     workflow_names = {path.name.removesuffix(".workflow.md") for path in workflows}
     if set(descriptions) != workflow_names:
         missing = sorted(workflow_names - descriptions.keys())
@@ -122,13 +169,8 @@ def generate_codex_assets(root: Path) -> dict[str, str]:
         if extra:
             details.append("unknown descriptions: " + ", ".join(extra))
         raise GenerationError("; ".join(details))
-    if not workflows:
-        raise GenerationError("no canonical workflows found")
-
     for source_path in workflows:
         name = source_path.name.removesuffix(".workflow.md")
-        if not NAME_PATTERN.fullmatch(name):
-            raise GenerationError(f"invalid canonical workflow name: {name}")
         _validate_skill_description(name, descriptions[name])
         title, body, _ = _read_core_document(source_path)
         source = source_path.relative_to(root).as_posix()
@@ -145,13 +187,9 @@ def generate_codex_assets(root: Path) -> dict[str, str]:
             source_path,
         )
 
-    agents = sorted((root / "core" / "agents").glob("*.agent.md"))
-    if not agents:
-        raise GenerationError("no canonical agents found")
+    agents = _core_files(root, "agents", ".agent.md")
     for source_path in agents:
         name = source_path.name.removesuffix(".agent.md")
-        if not NAME_PATTERN.fullmatch(name):
-            raise GenerationError(f"invalid canonical agent name: {name}")
         _, body, content = _read_core_document(source_path)
         source = source_path.relative_to(root).as_posix()
         output = f"agents/{name}.toml"
@@ -181,13 +219,9 @@ def generate_codex_assets(root: Path) -> dict[str, str]:
             )
         assets[output] = rendered
 
-    commands = sorted((root / "core" / "commands").glob("*.command.md"))
-    if not commands:
-        raise GenerationError("no canonical commands found")
+    commands = _core_files(root, "commands", ".command.md")
     for source_path in commands:
         name = source_path.name.removesuffix(".command.md")
-        if not NAME_PATTERN.fullmatch(name):
-            raise GenerationError(f"invalid canonical command name: {name}")
         _, body, _ = _read_core_document(source_path)
         source = source_path.relative_to(root).as_posix()
         output = f"commands/{name}.md"
@@ -207,13 +241,153 @@ def generate_codex_assets(root: Path) -> dict[str, str]:
     return dict(sorted(assets.items()))
 
 
-def _existing_asset_paths(output_root: Path) -> Iterable[Path]:
-    yield from (output_root / "skills").glob("*/SKILL.md")
-    yield from (output_root / "agents").glob("*.toml")
-    yield from (output_root / "commands").glob("*.md")
+def generate_claude_assets(root: Path) -> dict[str, str]:
+    """Render Claude Code skills, subagents, and compatibility commands."""
+    root = root.resolve()
+    provider_root = root / "providers" / "claude"
+    templates = provider_root / "templates"
+    skill_template = _template(templates / "skill.md.template")
+    agent_template = _template(templates / "agent.md.template")
+    command_template = _template(templates / "command.md.template")
+    assets: dict[str, str] = {}
+
+    for source_path in _core_files(root, "workflows", ".workflow.md"):
+        name = source_path.name.removesuffix(".workflow.md")
+        title, body, _ = _read_core_document(source_path)
+        source = source_path.relative_to(root).as_posix()
+        description = json.dumps(
+            _purpose_description(body, source_path), ensure_ascii=False
+        )
+        rendered = _render(
+            skill_template,
+            {
+                "name": name,
+                "description_yaml": description,
+                "title": title,
+                "source": source,
+                "body": body,
+            },
+            source_path,
+        )
+        _validate_frontmatter(
+            rendered, {"name": name, "description": description}, source_path
+        )
+        assets[f"skills/{name}/SKILL.md"] = rendered
+
+    for source_path in _core_files(root, "agents", ".agent.md"):
+        name = source_path.name.removesuffix(".agent.md")
+        _, body, content = _read_core_document(source_path)
+        source = source_path.relative_to(root).as_posix()
+        description = json.dumps(
+            _purpose_description(body, source_path), ensure_ascii=False
+        )
+        rendered = _render(
+            agent_template,
+            {
+                "name": name,
+                "description_yaml": description,
+                "source": source,
+                "content": content,
+            },
+            source_path,
+        )
+        _validate_frontmatter(
+            rendered,
+            {"name": name, "description": description, "model": "inherit"},
+            source_path,
+        )
+        assets[f"agents/{name}.md"] = rendered
+
+    for source_path in _core_files(root, "commands", ".command.md"):
+        name = source_path.name.removesuffix(".command.md")
+        _, body, _ = _read_core_document(source_path)
+        source = source_path.relative_to(root).as_posix()
+        assets[f"commands/{name}.md"] = _render(
+            command_template,
+            {
+                "name": name,
+                "source": source,
+                "body": body,
+            },
+            source_path,
+        )
+
+    return dict(sorted(assets.items()))
 
 
-def compare_assets(assets: dict[str, str], output_root: Path) -> list[Drift]:
+def generate_cursor_assets(root: Path) -> dict[str, str]:
+    """Render scoped Cursor project rules and beta custom commands."""
+    root = root.resolve()
+    provider_root = root / "providers" / "cursor"
+    templates = provider_root / "templates"
+    rule_template = _template(templates / "rule.mdc.template")
+    command_template = _template(templates / "command.md.template")
+    assets: dict[str, str] = {}
+
+    for source_path in _core_files(root, "workflows", ".workflow.md"):
+        name = source_path.name.removesuffix(".workflow.md")
+        title, body, _ = _read_core_document(source_path)
+        source = source_path.relative_to(root).as_posix()
+        description = json.dumps(
+            _purpose_description(body, source_path), ensure_ascii=False
+        )
+        rendered = _render(
+            rule_template,
+            {
+                "description_yaml": description,
+                "title": title,
+                "source": source,
+                "body": body,
+            },
+            source_path,
+        )
+        _validate_frontmatter(
+            rendered,
+            {"description": description, "globs": "", "alwaysApply": "false"},
+            source_path,
+        )
+        assets[f"rules/{name}.mdc"] = rendered
+
+    for source_path in _core_files(root, "commands", ".command.md"):
+        name = source_path.name.removesuffix(".command.md")
+        _, body, _ = _read_core_document(source_path)
+        source = source_path.relative_to(root).as_posix()
+        assets[f"commands/{name}.md"] = _render(
+            command_template,
+            {
+                "name": name,
+                "source": source,
+                "body": body,
+            },
+            source_path,
+        )
+
+    return dict(sorted(assets.items()))
+
+
+def generate_provider_assets(root: Path, provider: str) -> dict[str, str]:
+    generators = {
+        "claude": generate_claude_assets,
+        "codex": generate_codex_assets,
+        "cursor": generate_cursor_assets,
+    }
+    try:
+        generator = generators[provider]
+    except KeyError as exc:
+        raise GenerationError(f"unsupported provider: {provider}") from exc
+    return generator(root)
+
+
+def _existing_asset_paths(
+    output_root: Path, provider: str = PROVIDER
+) -> Iterable[Path]:
+    for pattern in ASSET_GLOBS[provider]:
+        yield from output_root.glob(pattern)
+
+
+def compare_assets(
+    assets: dict[str, str], output_root: Path, provider: str = PROVIDER
+) -> list[Drift]:
     output_root = output_root.resolve()
     expected = set(assets)
     drift: list[Drift] = []
@@ -223,7 +397,7 @@ def compare_assets(assets: dict[str, str], output_root: Path) -> list[Drift]:
             drift.append(Drift(relative_path, "missing"))
         elif path.read_text(encoding="utf-8") != content:
             drift.append(Drift(relative_path, "changed"))
-    for path in _existing_asset_paths(output_root):
+    for path in _existing_asset_paths(output_root, provider):
         relative_path = path.relative_to(output_root).as_posix()
         if relative_path not in expected:
             drift.append(Drift(relative_path, "unexpected"))
@@ -245,7 +419,12 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
         default=Path(__file__).resolve().parents[1],
         help="repository root (defaults to the script's parent repository)",
     )
-    parser.add_argument("--provider", choices=[PROVIDER], default=PROVIDER)
+    parser.add_argument(
+        "--provider",
+        choices=[*PROVIDERS, "all"],
+        default="all",
+        help="provider to generate (defaults to all)",
+    )
     parser.add_argument(
         "--output",
         type=Path,
@@ -259,12 +438,32 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(sys.argv[1:] if argv is None else argv)
     root = args.root.resolve()
-    output_root = (args.output or root / "providers" / args.provider).resolve()
+    if args.provider == "all" and args.output:
+        message = "--output requires one explicit --provider"
+        if args.json:
+            print(json.dumps({"status": "fail", "error": message}, sort_keys=True))
+        else:
+            print(f"generation failed: {message}", file=sys.stderr)
+        return 2
+
+    providers = PROVIDERS if args.provider == "all" else (args.provider,)
+    results: dict[str, dict[str, Any]] = {}
     try:
-        assets = generate_codex_assets(root)
-        if not args.check:
-            write_assets(assets, output_root)
-        drift = compare_assets(assets, output_root)
+        generated = {
+            provider: generate_provider_assets(root, provider) for provider in providers
+        }
+        for provider in providers:
+            output_root = (
+                args.output if args.output else root / "providers" / provider
+            ).resolve()
+            assets = generated[provider]
+            if not args.check:
+                write_assets(assets, output_root)
+            drift = compare_assets(assets, output_root, provider)
+            results[provider] = {
+                "assets": len(assets),
+                "drift": [asdict(item) for item in drift],
+            }
     except (GenerationError, OSError) as exc:
         if args.json:
             print(json.dumps({"status": "fail", "error": str(exc)}, sort_keys=True))
@@ -272,22 +471,44 @@ def main(argv: list[str] | None = None) -> int:
             print(f"generation failed: {exc}", file=sys.stderr)
         return 1
 
-    result = {
-        "status": "pass" if not drift else "fail",
-        "provider": args.provider,
-        "assets": len(assets),
-        "drift": [asdict(item) for item in drift],
-    }
+    failed = any(result["drift"] for result in results.values())
+    asset_count = sum(result["assets"] for result in results.values())
+    if len(providers) == 1:
+        provider = providers[0]
+        result = {
+            "status": "fail" if failed else "pass",
+            "provider": provider,
+            **results[provider],
+        }
+    else:
+        result = {
+            "status": "fail" if failed else "pass",
+            "provider": "all",
+            "assets": asset_count,
+            "providers": results,
+        }
     if args.json:
         print(json.dumps(result, indent=2, sort_keys=True))
-    elif drift:
-        for item in drift:
-            print(f"{item.path}: {item.reason}", file=sys.stderr)
-        print(f"provider generation failed: {len(drift)} drifted asset(s)", file=sys.stderr)
+    elif failed:
+        drift_count = 0
+        for provider, provider_result in results.items():
+            for item in provider_result["drift"]:
+                drift_count += 1
+                print(
+                    f"providers/{provider}/{item['path']}: {item['reason']}",
+                    file=sys.stderr,
+                )
+        print(
+            f"provider generation failed: {drift_count} drifted asset(s)",
+            file=sys.stderr,
+        )
     else:
         action = "checked" if args.check else "generated"
-        print(f"{action}: {len(assets)} {args.provider} assets")
-    return 0 if not drift else 1
+        if len(providers) == 1:
+            print(f"{action}: {asset_count} {providers[0]} assets")
+        else:
+            print(f"{action}: {asset_count} assets across {len(providers)} providers")
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

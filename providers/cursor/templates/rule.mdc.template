@@ -1,0 +1,22 @@
+---
+description: {{description_yaml}}
+globs:
+alwaysApply: false
+---
+
+# {{title}}
+
+Canonical source in this repository: `{{source}}`
+
+## Cursor Execution Notes
+
+- Read applicable repository instructions before acting.
+- Preserve analysis-only, read-only, and write-authorization boundaries from the request.
+- Treat required-agent names as review perspectives; this adapter does not define Cursor subagents.
+- Apply this rule only when its workflow matches the current task or the user selects it.
+- Prefer targeted verification before broader checks and report only checks actually run.
+- End with changed files or findings, verification results, assumptions, and remaining risks.
+
+## Canonical Workflow
+
+{{body}}

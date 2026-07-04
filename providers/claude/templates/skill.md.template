@@ -1,0 +1,20 @@
+---
+name: {{name}}
+description: {{description_yaml}}
+---
+
+# {{title}}
+
+Canonical source in this repository: `{{source}}`
+
+## Claude Code Execution Notes
+
+- Read applicable `CLAUDE.md` and repository instructions before acting.
+- Preserve analysis-only, read-only, and write-authorization boundaries from the request.
+- Use named subagents only when delegation is requested or materially improves an authorized task.
+- Prefer targeted verification before broader checks and report only checks actually run.
+- End with changed files or findings, verification results, assumptions, and remaining risks.
+
+## Canonical Workflow
+
+{{body}}

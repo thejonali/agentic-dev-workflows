@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 import io
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -64,10 +65,79 @@ class GenerateProviderAssetsTests(unittest.TestCase):
     def setUp(self) -> None:
         self.assets = generator.generate_codex_assets(ROOT)
 
-    def test_checked_in_codex_assets_are_reviewed_snapshots(self) -> None:
-        drift = generator.compare_assets(self.assets, ROOT / "providers" / "codex")
+    def test_checked_in_provider_assets_are_reviewed_snapshots(self) -> None:
+        counts = {}
+        for provider in generator.PROVIDERS:
+            assets = generator.generate_provider_assets(ROOT, provider)
+            counts[provider] = len(assets)
+            drift = generator.compare_assets(
+                assets, ROOT / "providers" / provider, provider
+            )
+            self.assertEqual(drift, [], provider)
 
-        self.assertEqual(drift, [])
+        self.assertEqual(counts, {"claude": 36, "codex": 36, "cursor": 21})
+
+    def test_provider_formats_match_current_packaging_contracts(self) -> None:
+        claude = generator.generate_claude_assets(ROOT)
+        cursor = generator.generate_cursor_assets(ROOT)
+
+        self.assertTrue(
+            claude["agents/reviewer.md"].startswith(
+                '---\nname: reviewer\ndescription: "Review a defined change'
+            )
+        )
+        self.assertIn("\nmodel: inherit\n---\n", claude["agents/reviewer.md"])
+        self.assertTrue(
+            cursor["rules/safe-change.mdc"].startswith(
+                '---\ndescription: "Plan, implement, and verify'
+            )
+        )
+        self.assertIn(
+            "\nglobs:\nalwaysApply: false\n---\n",
+            cursor["rules/safe-change.mdc"],
+        )
+
+    def test_cli_checks_all_providers_by_default(self) -> None:
+        output = io.StringIO()
+
+        with redirect_stdout(output):
+            status = generator.main(["--root", str(ROOT), "--check", "--json"])
+
+        result = json.loads(output.getvalue())
+        self.assertEqual(status, 0)
+        self.assertEqual(result["status"], "pass")
+        self.assertEqual(result["assets"], 93)
+        self.assertEqual(set(result["providers"]), set(generator.PROVIDERS))
+
+    def test_cli_output_requires_one_explicit_provider(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            with redirect_stdout(io.StringIO()):
+                status = generator.main(
+                    [
+                        "--root",
+                        str(ROOT),
+                        "--provider",
+                        "cursor",
+                        "--output",
+                        directory,
+                        "--json",
+                    ]
+                )
+            generated = sorted(
+                path.relative_to(directory).as_posix()
+                for path in Path(directory).rglob("*")
+                if path.is_file()
+            )
+
+            error_output = io.StringIO()
+            with redirect_stderr(error_output):
+                invalid_status = generator.main(["--output", directory])
+
+        self.assertEqual(status, 0)
+        self.assertEqual(len(generated), 21)
+        self.assertIn("rules/safe-change.mdc", generated)
+        self.assertEqual(invalid_status, 2)
+        self.assertIn("requires one explicit", error_output.getvalue())
 
     def test_write_and_drift_detection_cover_changed_and_unexpected_files(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
