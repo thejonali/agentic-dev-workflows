@@ -32,3 +32,6 @@ jobs:
 
       - name: Check generated provider assets
         run: python scripts/generate_provider_assets.py --check
+
+      - name: Check generated examples
+        run: python scripts/generate_examples.py --check
