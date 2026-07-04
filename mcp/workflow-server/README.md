@@ -1,7 +1,7 @@
 # Workflow Library MCP Server
 
 This local, read-only MCP server exposes the canonical workflow library and the
-repository's existing validation and Codex rendering logic over stdio.
+repository's shared validation and provider-rendering logic over stdio.
 
 ## Tools
 
@@ -9,7 +9,7 @@ repository's existing validation and Codex rendering logic over stdio.
 | --- | --- | --- |
 | `list_workflows` | Optional `category`, `limit` (1-100) | Lists canonical workflow metadata. The category filter searches names, titles, purposes, and commands. |
 | `get_workflow` | `name`, optional `max_chars` | Returns parsed sections and bounded canonical Markdown. |
-| `render_provider_asset` | `workflow`, optional `provider`, `max_chars` | Renders one Codex skill in memory without writing files. |
+| `render_provider_asset` | `workflow`, optional `provider`, `max_chars` | Renders one Claude Code skill, Codex skill, or Cursor rule in memory without writing files. |
 | `validate_workflow` | Optional `workflow` | Reuses the repository validator for all contracts or one workflow-focused result. |
 | `score_repo_health` | Optional repository `path` | Scores file-presence evidence for build, docs, tests, security, releases, and agent readiness without executing repository code. |
 
@@ -69,7 +69,7 @@ the package location cannot infer the repository root.
   does not follow directory symlinks, and never returns file contents.
 - No tool writes files, executes target repository code, or starts subprocesses.
   The server code intentionally reads only `WORKFLOW_LIBRARY_ROOT`.
-- Provider rendering is limited to the currently supported `codex` adapter.
+- Provider rendering supports `claude`, `codex`, and `cursor`.
 
 ## Verify
 

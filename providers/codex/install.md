@@ -102,7 +102,8 @@ agent, or prompt with the same name without comparing its behavior.
 
 ## Limitations
 
-- Generation currently targets Codex only.
+- Generation also targets Claude Code and Cursor; this guide covers only Codex
+  packaging and installation.
 - Skill selection descriptions remain provider metadata in
   `providers/codex/generator.json` and must be added for each new workflow.
 - Codex custom prompts are deprecated and user-local, so `commands/` is a

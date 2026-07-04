@@ -3,26 +3,34 @@
 ## Purpose
 
 Provider adapters package canonical `core/` behavior without becoming a second
-source of truth. Phase 6 generates the Codex adapter; Claude, Cursor, and generic
-generation remain deferred.
+source of truth. The Phase 6 generator targets Codex, Claude Code, and Cursor;
+generic generation remains deferred.
 
-## Codex Inputs and Outputs
+## Inputs and Outputs
 
 The generator reads:
 
 - Canonical workflows, agents, and commands under `core/`.
 - Codex skill-selection descriptions in `providers/codex/generator.json`.
-- Provider packaging templates in `providers/codex/templates/`.
+- Provider packaging templates under each generated provider's `templates/`
+  directory.
 
-It writes only these generated surfaces:
+It writes only these provider surfaces:
 
 - `providers/codex/skills/*/SKILL.md`
 - `providers/codex/agents/*.toml`
 - `providers/codex/commands/*.md`
+- `providers/claude/skills/*/SKILL.md`
+- `providers/claude/agents/*.md`
+- `providers/claude/commands/*.md`
+- `providers/cursor/rules/*.mdc`
+- `providers/cursor/commands/*.md`
 
-The install guide, generator manifest, and templates remain maintained inputs.
-Generation does not delete unexpected files; drift checks report them for
-explicit review.
+Install guides, generator metadata, and templates remain maintained inputs.
+Claude Code and Cursor descriptions are derived from canonical Purpose sections;
+Codex retains explicit selection descriptions because its adapter already uses a
+provider-specific selection contract. Generation does not delete unexpected
+files; drift checks report them for explicit review.
 
 ## Check for Drift
 
@@ -36,7 +44,7 @@ Use `--json` when another tool needs structured status. A clean check exits 0;
 missing, changed, unexpected, or invalid assets exit 1; invalid CLI usage exits
 2.
 
-## Regenerate Codex Assets
+## Regenerate Provider Assets
 
 After an approved canonical or packaging change:
 
@@ -48,7 +56,21 @@ After an approved canonical or packaging change:
 5. Run the unit suite and drift check from `AGENTS.md`.
 
 Use `--output <directory>` to render into a temporary provider root when testing
-generation without touching checked-in assets.
+one explicit `--provider`. The default target is `all`; use `--provider codex`,
+`--provider claude`, or `--provider cursor` for a focused operation.
+
+## Provider Compatibility Decisions
+
+- Codex uses skills, standalone TOML agents, and deprecated prompt compatibility
+  commands.
+- Claude Code uses Agent Skills, Markdown custom subagents, and compatibility
+  commands. Skills are preferred because Claude Code has merged custom commands
+  into the skill system.
+- Cursor uses one agent-requested `.mdc` rule per canonical workflow and plain
+  Markdown custom commands. Rules are not always-on, so the full workflow library
+  does not consume context on every request.
+- Cursor does not receive generated agent-role files because the planned Cursor
+  adapter contract maps workflows to rules and commands, not provider subagents.
 
 ## Strict Template Rendering
 

@@ -13,24 +13,28 @@ provider adapters or exposed through structured MCP tools.
   reviews, documentation, releases, and visual design.
 - Deterministic validation for workflow, command, agent, template, and link
   contracts.
-- A generated Codex adapter with checked-in, drift-tested skills, agents, and
-  commands.
+- Generated Codex, Claude Code, and Cursor adapters with checked-in,
+  drift-tested provider assets.
 - A local, read-only MCP server for workflow discovery, rendering, validation,
   and repository health scoring.
 
 ## Status
 
 Phase 7 exposes the canonical library through a local, read-only MCP workflow
-server. Its five tools reuse the existing validator and Codex renderer, apply
+server. Its five tools reuse the existing validator and provider renderer, apply
 bounded outputs, and include deterministic service and stdio protocol coverage.
-Provider rendering currently supports Codex only; other provider adapters remain
-later phases.
+Provider rendering supports Codex, Claude Code, and Cursor. The generic adapter
+remains a later phase.
 
 ## Use the Library
 
 - Browse the canonical specifications in the [core library](core/README.md).
 - Install generated Codex assets with the
   [Codex installation guide](providers/codex/install.md).
+- Install generated Claude Code assets with the
+  [Claude Code installation guide](providers/claude/install.md).
+- Install generated Cursor assets with the
+  [Cursor installation guide](providers/cursor/install.md).
 - Install and configure the local server with the
   [MCP workflow server guide](mcp/workflow-server/README.md).
 

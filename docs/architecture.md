@@ -74,7 +74,8 @@ data.
 
 ## Current Phase Boundary
 
-Phase 7 adds the read-only MCP workflow server while preserving the canonical
-core and shared rendering/validation boundaries established in Phase 6. Phase 4
-provider adapters remain intentionally deferred, and MCP rendering supports only
-the current Codex adapter until those providers exist.
+Phase 4 provider packaging is now implemented through the Phase 5 validation and
+Phase 6 generation pipeline rather than as manually maintained copies. Codex,
+Claude Code, and Cursor assets are reproducible from canonical core documents and
+provider-owned templates. Phase 7 MCP rendering reuses the same generator for all
+three providers; the generic adapter remains deferred.
