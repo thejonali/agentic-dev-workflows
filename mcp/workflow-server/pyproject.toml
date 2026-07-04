@@ -1,0 +1,17 @@
+[project]
+name = "workflow-library-mcp"
+version = "0.1.0"
+description = "Read-only MCP tools for the Agentic Developer Workflows library."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["mcp>=1.12,<2"]
+
+[project.scripts]
+workflow-library-mcp = "workflow_library_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/workflow_library_mcp"]

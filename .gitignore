@@ -4,3 +4,7 @@
 # Repository metadata that must remain versioned.
 !/.gitignore
 !/.github/
+
+# Python runtime artifacts.
+__pycache__/
+*.py[cod]

@@ -15,7 +15,7 @@ from urllib.parse import unquote
 
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 SCHEMA_FILES = ("workflow.schema.json", "agent.schema.json", "command.schema.json")
-LINK_ROOTS = ("README.md", "AGENTS.md", "core", "docs", "providers")
+LINK_ROOTS = ("README.md", "AGENTS.md", "core", "docs", "mcp", "providers")
 
 
 @dataclass(frozen=True, order=True)

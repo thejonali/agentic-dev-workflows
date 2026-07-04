@@ -16,6 +16,15 @@ SPEC.loader.exec_module(VALIDATOR)
 
 
 class ValidateWorkflowsTests(unittest.TestCase):
+    def test_mcp_documentation_is_checked_for_local_links(self) -> None:
+        root = SCRIPT_PATH.parents[1]
+        files = {
+            path.relative_to(root).as_posix()
+            for path in VALIDATOR._markdown_files(root)
+        }
+
+        self.assertIn("mcp/workflow-server/README.md", files)
+
     def test_parser_ignores_headings_inside_fenced_code(self) -> None:
         document = VALIDATOR.parse_document(
             "# Demo\n\n## Purpose\n\nText.\n\n```md\n## Not A Section\n```\n"
