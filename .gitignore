@@ -8,3 +8,6 @@
 # Python runtime artifacts.
 __pycache__/
 *.py[cod]
+
+# Locally generated release artifacts.
+/dist/
