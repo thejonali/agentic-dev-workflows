@@ -45,3 +45,12 @@ python3 -B scripts/generate_provider_assets.py --check
 python3 -B scripts/generate_examples.py --check
 git diff --check
 ```
+
+For a v0.1.0 release candidate, also build and inspect the deterministic
+archives without tagging or publishing:
+
+```sh
+python3 -B scripts/build_release.py --version 0.1.0
+unzip -t dist/agentic-dev-workflows-v0.1.0.zip
+(cd dist && shasum -a 256 -c SHA256SUMS-v0.1.0.txt)
+```

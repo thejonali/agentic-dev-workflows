@@ -23,7 +23,17 @@ else:
 
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 SCHEMA_FILES = ("workflow.schema.json", "agent.schema.json", "command.schema.json")
-LINK_ROOTS = ("README.md", "AGENTS.md", "core", "docs", "examples", "mcp", "providers")
+LINK_ROOTS = (
+    "README.md",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "ROADMAP.md",
+    "core",
+    "docs",
+    "examples",
+    "mcp",
+    "providers",
+)
 
 
 @dataclass(frozen=True, order=True)

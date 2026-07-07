@@ -81,8 +81,9 @@ are consumers of public outputs and never become sources of workflow behavior.
 
 ## Current Phase Boundary
 
-Phase 8 adds reproducible dogfooding examples on top of the Phase 4 provider
-packaging, Phase 5 validation, Phase 6 generation, and Phase 7 MCP server. Codex,
-Claude Code, and Cursor installation snapshots remain derived outputs, while the
-Python CLI and React `AGENTS.md` profiles remain explicitly illustrative. The
-generic adapter remains deferred.
+Phase 9 prepares v0.1.0 as a stable initial workflow-pack release. It adds
+versioned release documentation, a deterministic archive builder, provider-ready
+ZIP layouts, and checksums on top of the Phase 8 examples. Release packaging
+consumes the canonical core and checked provider outputs; it does not create a
+new source of workflow behavior. The generic adapter and installer CLI remain
+deferred.
