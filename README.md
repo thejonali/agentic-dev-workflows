@@ -26,16 +26,19 @@ those outputs from drifting from their source.
 
 ## Status
 
-The planned implementation through Phase 8 is complete. The library generates
-Codex skills, agents, and commands; Claude Code skills and subagents; and Cursor
-rules and commands from the same provider-neutral core. A local, read-only MCP
-server exposes five structured tools for discovery, rendering, validation, and
-repository health scoring. Reproducible installation examples exercise the
-generated assets without becoming a second source of workflow behavior. The
-generic adapter remains a later phase.
+v0.1.0 defines the initial stable release. The planned implementation through
+Phase 9 is complete: the library generates Codex skills, agents, and commands;
+Claude Code skills and subagents; and Cursor rules and commands from the same
+provider-neutral core. A local, read-only MCP server exposes five structured
+tools for discovery, rendering, validation, and repository health scoring.
+Reproducible installation examples and release archives exercise the generated
+assets without becoming a second source of workflow behavior. The generic
+adapter remains deferred.
 
 ## Use the Library
 
+- Start with the unified [installation guide](docs/installation.md) for release
+  archives, checksums, provider layouts, and MCP setup.
 - Browse the canonical specifications in the [core library](core/README.md).
 - Install generated Codex assets with the
   [Codex installation guide](providers/codex/install.md).
@@ -64,6 +67,21 @@ the rendering model. Repository-specific guidance for coding agents is in
 
 See the [provider adapter guide](docs/provider-adapters.md) before regenerating
 or changing provider packaging.
+
+## Release Preparation
+
+The [v0.1.0 release notes](docs/releases/v0.1.0.md) describe compatibility,
+artifacts, verification, and known limitations. See the [changelog](CHANGELOG.md)
+for the release inventory and the [roadmap](ROADMAP.md) for post-v0.1.0 plans.
+
+Build the four deterministic ZIP files and their SHA-256 manifest locally:
+
+```sh
+python3 -B scripts/build_release.py --version 0.1.0
+```
+
+Generated files are written to the ignored `dist/` directory. Tagging and
+publishing remain separate, explicit release operations.
 
 ## Design Principles
 

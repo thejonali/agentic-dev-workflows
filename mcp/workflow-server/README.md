@@ -3,6 +3,9 @@
 This local, read-only MCP server exposes the canonical workflow library and the
 repository's shared validation and provider-rendering logic over stdio.
 
+For versioned archive installation and checksum verification, start with the
+[unified installation guide](../../docs/installation.md).
+
 ## Tools
 
 | Tool | Inputs | Behavior |
@@ -80,6 +83,7 @@ test is enabled:
 python3 -B -m unittest discover -s tests -v
 python3 -B scripts/validate_workflows.py
 python3 -B scripts/generate_provider_assets.py --check
+python3 -B scripts/generate_examples.py --check
 git diff --check
 ```
 
